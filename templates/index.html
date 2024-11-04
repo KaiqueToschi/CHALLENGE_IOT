@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Sentimentos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de Sentimentos</h1>
+        <textarea id="message" placeholder="Digite sua mensagem aqui..."></textarea>
+        <button onclick="analyzeSentiment()">Analisar</button>
+        <div id="result" class="result"></div>
+    </div>
+    <script>
+        function analyzeSentiment() {
+            const message = document.getElementById('message').value;
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = `Sentimento: ${data.sentiment}`;
+                
+                // Limpa as classes anteriores
+                resultElement.classList.remove('good', 'neutral', 'bad');
+
+                // Adiciona a classe correspondente
+                if (data.sentiment.includes('Satisfeito')) {
+                    resultElement.classList.add('good');
+                } else if (data.sentiment.includes('Neutro')) {
+                    resultElement.classList.add('neutral');
+                } else if (data.sentiment.includes('Insatisfeito')) {
+                    resultElement.classList.add('bad');
+                } else {
+                    resultElement.classList.add('neutral'); // Default case
+                }
+            })
+            .catch(error => {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = 'Erro ao analisar o sentimento. Tente novamente.';
+                resultElement.classList.remove('good', 'neutral', 'bad');
+                resultElement.classList.add('bad');
+            });
+        }
+    </script>
+</body>
+</html>
