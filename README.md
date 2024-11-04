@@ -89,4 +89,4 @@ A longo prazo, a aplicação pode ser dividida em microserviços, com uma camada
 - **style.css**: Define o estilo da interface.
 - **JavaScript**: Responsável por enviar a mensagem ao backend e exibir o resultado.
 
-Este README fornece uma visão geral do projeto, instruções para configuração e execução, e descreve os principais aspectos da arquitetura e funcionalidades da aplicação.
+
